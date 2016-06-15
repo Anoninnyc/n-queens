@@ -129,7 +129,9 @@
       var boardLength = this.rows().length;
 
       for (var i = 0; i < boardLength; i++) {
-        if (this.hasColConflictAt(i)) return true;
+        if (this.hasColConflictAt(i)) {
+          return true;
+        }
       }
 
       return false; // fixme
@@ -168,7 +170,9 @@
       var numberOfRows = this.rows().length;
       var maxColumnOffset = -numberOfRows + 1;
       for (var i = maxColumnOffset; i < numberOfRows - maxColumnOffset; i++) {
-        if (this.hasMajorDiagonalConflictAt(i)) return true;
+        if (this.hasMajorDiagonalConflictAt(i)) {
+          return true;
+        }
       }
       return false;
     },
@@ -187,7 +191,7 @@
       for (var i = 0; i < numberOfRows; i++) {
         var x = i;
         var y = columnOffset - i;
-        console.log('offset:', minorDiagonalColumnIndexAtFirstRow, "coordinates:",[x,y],"piece?", this.get(x)[y]);
+        // console.log('offset:', minorDiagonalColumnIndexAtFirstRow, "coordinates:",[x,y],"piece?", this.get(x)[y]);
         if (this.get(x)[y]) {
           conflicts++;
         }
@@ -198,7 +202,7 @@
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      console.log("----- NEW TEST -----");
+      // console.log("----- NEW TEST -----");
       var numberOfRows = this.get('n');
       var maxColumnOffset = numberOfRows - 1;
       for (var i = 0; i < numberOfRows + maxColumnOffset; i++) {
@@ -207,7 +211,21 @@
         }
       }
       return false;
+    },
+
+    hasAnyConflictsRook: function() {
+      return (this.hasAnyColConflicts() || this.hasAnyRowConflicts());
+    }, 
+
+    hasAnyConflictsQueen: function() {
+      return (this.hasAnyColConflicts() || 
+        this.hasAnyRowConflicts() ||
+        this.hasAnyMinorDiagonalConflicts() ||
+        this.hasAnyMajorDiagonalConflicts()
+        );
     }
+
+
 
     /*--------------------  End of Helper Functions  ---------------------*/
 
