@@ -79,12 +79,26 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      
+      if (this.attributes[rowIndex].indexOf(1) !== this.attributes[rowIndex].lastIndexOf(1)) {
+        return true;
+      }
+      return false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+     
+
+      var length = board.attributes.n;
+      for (var i = 0; i < length; i++) {
+         if (this.hasRowConflictAt(i)===true){
+          return true;
+         }
+      }
+
+
+return false;
     },
 
 
@@ -94,12 +108,33 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var columnfied = [];
+
+ var length = this.attributes.n;
+      for (var i = 0; i < length; i++) {
+         columnfied.push(this.attributes[i][colIndex])
+         }
+
+
+ if (columnfied.indexOf(1)===columnfied.lastIndexOf(1)){
+  return false;
+ }
+ return true;
+
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+
+      var length = this.attributes.n;
+      for (var i = 0; i < length; i++) {
+         if (this.hasColConflictAt(i)===true){
+          return true;
+         }
+      }
+
+
+return false;
     },
 
 
@@ -109,12 +144,54 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      var final=false;
+      var start = majorDiagonalColumnIndexAtFirstRow;
+      var columnfied = [];
+      var columnfied2=[];
+      var length = this.attributes.n;
+      for (var i = 0; i < length ; i++) {
+        columnfied.push(this.attributes[i][start+i]);
+         }
+
+    if (columnfied.indexOf(1)===-1 && columnfied2.indexOf(1)===-1){
+      return false;
+    }
+
+if (columnfied.indexOf(1)!==columnfied.lastIndexOf(1)){
+  return true;
+}
+
+
+for (var i = 0; i < length ; i++) {
+  if (this.attributes[start+i]!==undefined){
+      columnfied2.push(this.attributes[start+i][i]);
+  }
+}
+
+
+if (columnfied2.indexOf(1)!==columnfied2.lastIndexOf(1)){
+  return true;
+}
+
+console.log(columnfied,columnfied2)
+
+
+   return final;
     },
+
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+
+      var length = this.attributes.n;
+      for (var i = 0; i < length; i++) {
+         if (this.hasMajorDiagonalConflictAt(i)===true){
+          return true;
+         }
+      }
+
+
+return false;
     },
 
 
