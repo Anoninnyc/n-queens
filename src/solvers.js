@@ -64,3 +64,59 @@ window.countNQueensSolutions = function(n) {
   // console.log('Number of solutions for ' + n + ' queens:', solutionCount);
   // return solutionCount;
 };
+
+
+//New function that finds all possible board outcomes and saves them
+
+window.findAllSolutions = function(n, board, outcomes, currentRow) {
+  // var solution = undefined; //fixme
+  // console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
+  // return solution;
+
+  //If currentRow > n, return;
+  if (currentRow === n) {
+    outcomes.push(board);
+    //Return anything?
+    return outcomes;
+  }
+
+  //Initialize outcomes array
+  if (outcomes === undefined) {
+    outcomes = [];
+  }
+
+  //If there is no board passed in, initialize an empty n x n board
+  if (board === undefined) {
+    board = new Board({'n': n});
+  } 
+
+  //Default to row 0
+  if (currentRow === undefined) {
+    currentRow = 0;
+  }
+
+  //Iterate through all the column indices, while on the current row
+  for (var i = 0; i < n; i++) {
+    board.togglePiece(currentRow, i);
+    if (!board.hasAnyQueensConflicts()) {
+      //Skip onto next row, and recurse function
+      outcomes = findAllSolutions(n, board, outcomes, currentRow++);
+    } else {
+      //This toggle had a conflict, so untoggle
+      board.togglePiece(currentRow, i);
+    }
+    //Move onto the next column index in the current row
+  }
+
+
+
+
+  //If at the end of the row, after iterating through all columns
+  //Return out of function to the previous function invocation
+  outcomes.push(board);
+
+  //If statement to return entire board goes here
+  return outcomes;
+};
+
+
