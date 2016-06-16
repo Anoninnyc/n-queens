@@ -231,18 +231,29 @@
 
     //Our optimized solution functions
 
+
+    hasDiagonalConflictAt: function(row, column) {
+
+      var majorDiagonalColumnIndex = this._getFirstRowColumnIndexForMajorDiagonalOn(row, column);
+
+      var minorDiagonalColumnIndex = this._getFirstRowColumnIndexForMinorDiagonalOn(row, column);
+
+      return (this.hasMajorDiagonalConflictAt(majorDiagonalColumnIndex) || 
+        this.hasMinorDiagonalConflictAt(minorDiagonalColumnIndex));
+    },
+
     hasAnyConflictsRook: function(column, currentRow) {
-      return this.hasColConflictAt(column);
+      return this.hasColConflictAbove(column, currentRow);
         // || this.hasAnyRowConflicts());
     }, 
 
     hasAnyConflictsQueen: function(column, currentRow) {
-      return (this.hasColConflictAt(column) || 
+      return (this.hasColConflictAbove(column, currentRow) || 
         // Removing this test because our algorithm doesn't need it (optimization)
         // this.hasAnyRowConflicts() ||
-        this.hasAnyMinorDiagonalConflicts() ||
-        this.hasAnyMajorDiagonalConflicts()
-        );
+        // this.hasAnyMinorDiagonalConflicts() ||
+        // this.hasAnyMajorDiagonalConflicts());
+        this.hasDiagonalConflictAt(currentRow, column));
     }
 
 
