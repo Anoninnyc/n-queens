@@ -35,26 +35,6 @@ window.findNQueensSolution = function(n, board, currentRow) {
   // var solution = undefined; //fixme
   // console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   // return solution;
-  if (board === undefined) {
-    board = new Board({'n': n});
-  } 
-
-  if (currentRow === undefined) {
-    currentRow = 0;
-  }
-
-  for (var i = 0; i < n; i++) {
-    board.togglePiece(currentRow, i);
-    if (!board.hasAnyQueensConflicts()) {
-      //Skip onto next row, and recurse function
-      findNQueensSolution(n, board, currentRow++);
-    }
-
-  }
-
-  //If at the end of the row, after iterating through all columns
-  //Return out of function to the previous function invocation
-  return;
 };
 
 // return the number of nxn chessboards that exist, with n queens placed such that none of them can attack each other
@@ -74,11 +54,12 @@ window.findAllSolutions = function(n, board, outcomes, currentRow) {
   // return solution;
 
   //If currentRow > n, return;
-  if (currentRow === n) {
-    outcomes.push(board);
-    //Return anything?
-    return outcomes;
-  }
+  // if (currentRow === n) {
+
+  //   outcomes.push(board);
+  //   //Return anything?
+  //   return outcomes;
+  // }
 
   //Initialize outcomes array
   if (outcomes === undefined) {
@@ -95,12 +76,20 @@ window.findAllSolutions = function(n, board, outcomes, currentRow) {
     currentRow = 0;
   }
 
+  var skippedFlag = false; 
+
+
+
   //Iterate through all the column indices, while on the current row
   for (var i = 0; i < n; i++) {
     board.togglePiece(currentRow, i);
-    if (!board.hasAnyQueensConflicts()) {
+    if (!board.hasAnyQueensConflicts() && n !== currentRow + 1) {
       //Skip onto next row, and recurse function
-      outcomes = findAllSolutions(n, board, outcomes, currentRow++);
+      outcomes = findAllSolutions(n, board, outcomes, currentRow+1);
+      board.togglePiece(currentRow, i);
+    } else if (!board.hasAnyQueensConflicts() && currentRow + 1 === n) {
+      outcomes.push(board);
+      board.togglePiece(currentRow, i);
     } else {
       //This toggle had a conflict, so untoggle
       board.togglePiece(currentRow, i);
@@ -108,12 +97,15 @@ window.findAllSolutions = function(n, board, outcomes, currentRow) {
     //Move onto the next column index in the current row
   }
 
+  if (!skippedFlag && n !== currentRow + 1) {
+    skippedFlag = true;
+    outcomes = findAllSolutions(n, board, outcomes, currentRow+1);
+//ARE WE RETTING OUTCOMES HERE?
+  }
 
-
-
+  console.log('flag status:', skippedFlag, 'board:', board, 'outcomes:', outcomes);
   //If at the end of the row, after iterating through all columns
   //Return out of function to the previous function invocation
-  outcomes.push(board);
 
   //If statement to return entire board goes here
   return outcomes;
