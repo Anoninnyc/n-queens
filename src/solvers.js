@@ -1,16 +1,19 @@
 /*  
-
-
 var board = [
-  [0,0,0,0],
-  [0,0,0,0],
-  [0,0,0,0],
-  [0,0,0,0]
+  [0, 0, 0, 0],
+  [0, 0, 1, 0],
+  [0, 0, 0, 0],
+  [1, 0, 0, 0]
 ]
-
+//Function to replace overbearing diagonal checker.....
 
 var test = function(n, t, l, board) {
+// 'n' is conventional 'n','t' is row index FROM the top (i.e. currColumn),'l' us column index from the left (i.e. 'i' in a for loop), board is array or arrays
+
+//lets insert a piece 
   board[t][l] = 1
+  
+  //lets find the upper-leftmost square on the board it can attack;
   var topLeft = t;
   var leftLeft = l
   while (topLeft > 0 && leftLeft > 0 && leftLeft < n - 1) {
@@ -18,7 +21,7 @@ var test = function(n, t, l, board) {
     leftLeft--;
   }
 
-
+  //lets find the upper-rightmost square on the board it can attack;
   var topRight = t;
   var leftRight = l
   while (topRight > 0 && leftRight > 0 && leftRight < n - 1) {
@@ -26,35 +29,33 @@ var test = function(n, t, l, board) {
     leftRight++;
   }
 
-  //console.log(topLeft, leftLeft)
-  //console.log(topRight, leftRight)
-  var rightSlashify = [];
-  var leftSlashify = [];
+  
+  
+  
+  
+  //going diagonally down from the upper=leftmost square it can attack, let's SEE if there's more than one 1. If so, increment counter by 1.
+  leftCount = 0;
   for (var i = 0; i < n; i++) {
-    if ((topLeft + i < n) && (leftLeft + i < n)) {
-      rightSlashify.push(board[topLeft + i][leftLeft + i])
+
+    if (board[topLeft + i][leftLeft + i] === 1) {
+      leftCount++;
     }
   }
+  //going diagonally down from the upper=right-most square it can attack, let's SEE if there's more than one 1. If so, increment counter by 1.
+  rightCount = 0;
 
   for (var i = 0; i < n; i++) {
-    leftSlashify.push(board[topRight + i][leftRight - i])
+    if (board[topRight + i][leftRight - i] === 1) {
+      rightCount++;
+    }
   }
-
-  if (leftSlashify.indexOf(1) !== leftSlashify.lastIndexOf(1)) {
+//any more than 2 occurrences between both? return true=- there is conflict
+  if (rightCount + leftCount > 2) {
     return true;
-    ///there is a conflict
   }
-  if (rightSlashify.indexOf(1) !== rightSlashify.lastIndexOf(1)) {
-    return true;
-    ///there is a conflict
-  }
+//otherwise return true///
   return false;
 };
-
-
-
-
-
 
 
 
