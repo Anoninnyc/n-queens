@@ -111,6 +111,20 @@
     // --------------------------------------------------------------
     //
     // test if a specific column on this board contains a conflict
+    hasColConflictAbove: function(colIndex, currentRow) {
+      var conflict = 0;
+
+      // console.log(currentRow);
+
+      for (var row = 0; row < currentRow + 1; row++) {
+        if (this.get(row)[colIndex]) {
+          conflict++;
+        }
+      }
+
+      return (conflict > 1); // fixme
+    },
+
     hasColConflictAt: function(colIndex) {
       var numberOfRows = this.get('n');
       var conflict = 0;
@@ -213,13 +227,19 @@
       return false;
     },
 
-    hasAnyConflictsRook: function() {
-      return (this.hasAnyColConflicts() || this.hasAnyRowConflicts());
+
+
+    //Our optimized solution functions
+
+    hasAnyConflictsRook: function(column, currentRow) {
+      return this.hasColConflictAt(column);
+        // || this.hasAnyRowConflicts());
     }, 
 
-    hasAnyConflictsQueen: function() {
-      return (this.hasAnyColConflicts() || 
-        this.hasAnyRowConflicts() ||
+    hasAnyConflictsQueen: function(column, currentRow) {
+      return (this.hasColConflictAt(column) || 
+        // Removing this test because our algorithm doesn't need it (optimization)
+        // this.hasAnyRowConflicts() ||
         this.hasAnyMinorDiagonalConflicts() ||
         this.hasAnyMajorDiagonalConflicts()
         );
