@@ -85,13 +85,18 @@ window.findAllSolutions = function(n, board, outcomes, currentRow) {
     board.togglePiece(currentRow, i);
     if (!board.hasAnyQueensConflicts() && n !== currentRow + 1) {
       //Skip onto next row, and recurse function
-      outcomes = findAllSolutions(n, board, outcomes, currentRow+1);
+     //there's something wrong here and line 102
+      outcomes = findAllSolutions(n, board, outcomes, currentRow + 1);
       board.togglePiece(currentRow, i);
     } else if (!board.hasAnyQueensConflicts() && currentRow + 1 === n) {
-      outcomes.push(board);
+
+      // console.log('board:', board);
+      var boardCopy = JSON.parse(JSON.stringify(board));
+      outcomes.push(boardCopy);
       board.togglePiece(currentRow, i);
     } else {
       //This toggle had a conflict, so untoggle
+    
       board.togglePiece(currentRow, i);
     }
     //Move onto the next column index in the current row
@@ -100,14 +105,16 @@ window.findAllSolutions = function(n, board, outcomes, currentRow) {
   if (!skippedFlag && n !== currentRow + 1) {
     skippedFlag = true;
     outcomes = findAllSolutions(n, board, outcomes, currentRow+1);
-//ARE WE RETTING OUTCOMES HERE?
+
   }
 
-  console.log('flag status:', skippedFlag, 'board:', board, 'outcomes:', outcomes);
+ // console.log('flag status:', skippedFlag, 'outcomes:', outcomes,'row:',currentRow,'board:',board);
+ 
   //If at the end of the row, after iterating through all columns
   //Return out of function to the previous function invocation
 
   //If statement to return entire board goes here
+  outcomes.push(JSON.parse(JSON.stringify(board)));
   return outcomes;
 };
 
