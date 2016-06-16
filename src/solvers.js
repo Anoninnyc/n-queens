@@ -1,4 +1,75 @@
-/*           _
+/*  
+
+
+var board = [
+  [0,0,0,0],
+  [0,0,0,0],
+  [0,0,0,0],
+  [0,0,0,0]
+]
+
+
+var test = function(n, t, l, board) {
+  board[t][l] = 1
+  var topLeft = t;
+  var leftLeft = l
+  while (topLeft > 0 && leftLeft > 0 && leftLeft < n - 1) {
+    topLeft--;
+    leftLeft--;
+  }
+
+
+  var topRight = t;
+  var leftRight = l
+  while (topRight > 0 && leftRight > 0 && leftRight < n - 1) {
+    topRight--;
+    leftRight++;
+  }
+
+  //console.log(topLeft, leftLeft)
+  //console.log(topRight, leftRight)
+  var rightSlashify = [];
+  var leftSlashify = [];
+  for (var i = 0; i < n; i++) {
+    if ((topLeft + i < n) && (leftLeft + i < n)) {
+      rightSlashify.push(board[topLeft + i][leftLeft + i])
+    }
+  }
+
+  for (var i = 0; i < n; i++) {
+    leftSlashify.push(board[topRight + i][leftRight - i])
+  }
+
+  if (leftSlashify.indexOf(1) !== leftSlashify.lastIndexOf(1)) {
+    return true;
+    ///there is a conflict
+  }
+  if (rightSlashify.indexOf(1) !== rightSlashify.lastIndexOf(1)) {
+    return true;
+    ///there is a conflict
+  }
+  return false;
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        _
    ___  ___ | |_   _____ _ __ ___
   / __|/ _ \| \ \ / / _ \ '__/ __|
   \__ \ (_) | |\ V /  __/ |  \__ \
@@ -12,6 +83,27 @@
 
 
 // return a matrix (an array of arrays) representing a single nxn chessboard, with n rooks placed such that none of them can attack each other
+
+
+
+/*
+
+TO DO: 
+LAST NON-bitwise operator!!!!!!!!!!!!!
+Do the same thing for ini=dividual queens diagonal, as wee did for individual queens columns. 
+
+IE we only need ot check the squares the current queen has access to diagonally, instead of the entire board;
+
+
+
+
+
+
+
+*/
+
+
+
 
 window.findNRooksSolution = function(n) {
   var outcomes = findOneSolutionRook(n);
